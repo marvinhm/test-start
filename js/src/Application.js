@@ -17,8 +17,22 @@ class Application {
     return priceVal;
   }
 
+  static getPercentDiscount(price, discounts) {
+    let discountAmount = 0;
+    let itemPrice = price;
+    if (Object.keys(discounts).length > 0) {
+      itemPrice *= (discounts[Object.keys(discounts)[0]].value / 100);
+      discountAmount = itemPrice;
+    }
+    return discountAmount;
+  }
+
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
-    return this.checkBasketIfInUse(basket);
+    const price = this.checkBasketIfInUse(basket);
+    const discountAmount = this.getPercentDiscount(price, discounts);
+    const total = price - discountAmount;
+
+    return total;
     throw new Error('You must implement this.');
   }
 }
