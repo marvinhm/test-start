@@ -17,19 +17,33 @@ class Application {
     return priceVal;
   }
 
-  static getPercentDiscount(price, discounts) {
+  static basketQuantity(basket) {
+    return Object.keys(basket).length;
+  }
+
+  static getPercentDiscount(price, discounts, basketquantity) {
     let discountAmount = 0;
     let itemPrice = price;
-    if (Object.keys(discounts).length > 0) {
-      itemPrice *= (discounts[Object.keys(discounts)[0]].value / 100);
+    const discountkeysarray = Object.keys(discounts);
+    const discountminimum = discounts[discountkeysarray[0]].min;
+  
+    if (discountkeysarray.length > 0 && basketquantity >= discountminimum) {
+      itemPrice *= (discounts[discountkeysarray[0]].value / 100);
       discountAmount = itemPrice;
     }
     return discountAmount;
   }
 
+  // static discountsAvailable(discounts) {
+
+  // }
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
     const price = this.checkBasketIfInUse(basket);
-    const discountAmount = this.getPercentDiscount(price, discounts);
+    const basketquantity = this.basketQuantity(basket);
+    let discountAmount = 0;
+    if (Object.keys(discounts).length > 0) {
+      discountAmount = this.getPercentDiscount(price, discounts, basketquantity);
+    }
     const total = price - discountAmount;
 
     return total;
