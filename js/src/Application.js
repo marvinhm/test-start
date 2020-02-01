@@ -5,6 +5,9 @@ class Application {
    * @returns {!number}
    */
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
+    if (Object.keys(basket).length === 0) {
+      return 0;
+    }
     throw new Error('You must implement this.');
   }
 }
