@@ -20,44 +20,75 @@ class Application {
     return Object.keys(basket).length;
   }
 
+  // static discountType(discounts) {
+  //   if() {
+
+  //   }
+  // }
+
   static checkBasketIfInUse(basket) {
     let priceVal = 0;
-    if (Object.keys(basket).length > 1) {
+    if (this.basketQuantity(basket) > 1) {
       // eslint-disable-next-line guard-for-in
       for (let i in basket) {
         priceVal += basket[i].price * basket[i].quantity;
       }
-    } else if (Object.keys(basket).length === 1) {
+    } else if (this.basketQuantity(basket) === 1) {
       priceVal = basket[this.getBasketId(basket)].price;
     }
     return priceVal;
   }
 
-  static getPercentDiscount(price, discounts, basketquantity) {
+  static getPercentDiscount(price, discounts, discountid, basketquantity) {
     let discountamount = 0;
-    let itemPrice = price;
-    const discountkeysarray = this.getDiscountIdArray(discounts);
-    const discountminimum = discounts[discountkeysarray[0]].min;
-    if (discountkeysarray.length > 0 && basketquantity >= discountminimum) {
-      for (let i in discountkeysarray) {
-        itemPrice -= itemPrice * (discounts[discountkeysarray[i]].value / 100);
-      }
-      discountamount = price - itemPrice;
-    }
+    const itemPrice = price;
+    // const discountkeysarray = this.getDiscountIdArray(discounts);
+    // const discountminimum = discounts[discountid].min;
+    // if (basketquantity >= discountminimum) {
+      // itemPrice -= itemPrice * (discounts[discountid].value / 100);
+      discountamount = itemPrice * (discounts[discountid].value / 100);
+    // }
     return discountamount;
   }
 
-  // static discountsAvailable(discounts) {
 
+  // static getPercentDiscount(price, basketquantity) {
+  //   let discountamount = 0;
+  //   let itemPrice = price;
   // }
+
+
+  static applyDiscount(discountsArray, price, discounts, basketquantity) {
+    let discountamount = 0;
+    let discountedprice = price;
+    let discountid = '';
+  
+    // eslint-disable-next-line guard-for-in
+    for (let i in discountsArray) {
+      discountid = discountsArray[i];
+      const discounttype = discounts[discountsArray[i]].type;
+      const discountminimum = discounts[discountid].min;
+      if (discounttype === 'percent' && basketquantity >= discountminimum) {
+        discountamount = this.getPercentDiscount(discountedprice, discounts, discountid);
+        discountedprice -= discountamount;
+      }
+    }
+    return discountedprice;
+  }
+
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
     const price = this.checkBasketIfInUse(basket);
+    console.log(price);
     const basketquantity = this.basketQuantity(basket);
+    let total = 0;
     let discountamount = 0;
-    if (this.getDiscountIdArray(discounts).length > 0) {
-      discountamount = this.getPercentDiscount(price, discounts, basketquantity);
+    const discountsArray = this.getDiscountIdArray(discounts);
+    if (discountsArray.length > 0) {
+      discountamount = this.applyDiscount(discountsArray, price, discounts, basketquantity);
+      total = discountamount;
+    } else {
+      total = price;
     }
-    const total = price - discountamount;
 
     return total;
     throw new Error('You must implement this.');
