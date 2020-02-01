@@ -124,25 +124,25 @@ test('absolute discount', () => {
   expect(Application.main(basket, discounts)).toBe(7.50);
 });
 
-// test('absolute discount has minimum qualifier', () => {
-//   const discounts = {
-//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-//       type: 'absolute',
-//       value: 2.50,
-//       min: 3,
-//     },
-//   };
-//   const basket = {
-//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-//       price: 10.00,
-//       quantity: 2, // need 3 to qualify, only buying 2
-//       discounts: [
-//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-//       ],
-//     },
-//   };
-//   expect(Application.main(basket, discounts)).toBe(20.00);
-// });
+test('absolute discount has minimum qualifier', () => {
+  const discounts = {
+    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+      type: 'absolute',
+      value: 2.50,
+      min: 3,
+    },
+  };
+  const basket = {
+    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+      price: 10.00,
+      quantity: 2, // need 3 to qualify, only buying 2
+      discounts: [
+        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+      ],
+    },
+  };
+  expect(Application.main(basket, discounts)).toBe(20.00);
+});
 
 // test('percentage and absolute discount', () => {
 //   const discounts = {

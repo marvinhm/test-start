@@ -16,18 +16,22 @@ class Application {
     return basketid;
   }
 
-  static basketQuantity(basket) {
-    return Object.keys(basket).length;
+  static sizeOfBasket(basket) {
+    let size = 0;
+    if (Object.keys(basket).length > 0) {
+      size = Object.keys(basket).length;
+    }
+    return size;
   }
 
   static checkBasketIfInUse(basket) {
     let priceVal = 0;
-    if (this.basketQuantity(basket) > 1) {
+    if (this.sizeOfBasket(basket) > 1) {
       // eslint-disable-next-line guard-for-in
       for (let i in basket) {
-        priceVal += basket[i].price * basket[i].quantity;
+        priceVal += (basket[i].price * basket[i].quantity);
       }
-    } else if (this.basketQuantity(basket) === 1) {
+    } else if (this.sizeOfBasket(basket) === 1) {
       priceVal = basket[this.getBasketId(basket)].price;
     }
     return priceVal;
@@ -66,15 +70,19 @@ class Application {
       } else if (discounttype === 'absolute' && basketquantity >= discountminimum) {
         discountamount = this.getAbsoluteDiscount(discounts, discountid);
         discountedprice -= discountamount;
+      } else {
+        discountedprice *= basketquantity;
       }
     }
     return discountedprice;
   }
 
+
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
     const price = this.checkBasketIfInUse(basket);
-    console.log(price);
-    const basketquantity = this.basketQuantity(basket);
+    const size = this.sizeOfBasket(basket);
+    let basketquantity = 0;
+    size > 0 ? basketquantity = basket[this.getBasketId(basket)].quantity : basketquantity = 0;
     let total = 0;
     let discountamount = 0;
     const discountsArray = this.getDiscountIdArray(discounts);
