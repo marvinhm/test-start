@@ -5,12 +5,16 @@ class Application {
    * @returns {!number}
    */
 
-  static main(basket, discounts) { // eslint-disable-line no-unused-vars
-    if (Object.keys(basket).length === 0) {
-      return 0;
-    } else if (Object.keys(basket).length > 0) {
-      return basket[Object.keys(basket)[0]].price;
+  static checkBasketIfInUse(basket) {
+    let priceVal = 0;
+    if (Object.keys(basket).length > 0) {
+      priceVal = basket[Object.keys(basket)[0]].price;
     }
+    return priceVal;
+  }
+
+  static main(basket, discounts) { // eslint-disable-line no-unused-vars
+    return this.checkBasketIfInUse(basket);
     throw new Error('You must implement this.');
   }
 }
