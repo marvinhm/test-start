@@ -53,6 +53,25 @@ class Application {
     return discountamount;
   }
 
+  static getBuyNGetMFree(n, m, price, basketquantity) {
+    let totalprice = price * basketquantity;
+    let discountprice = 0;
+
+    discountprice = (Math.floor(basketquantity / n) * m) * price;
+
+    totalprice -= discountprice;
+    // for (let i = 0; i < basketquantity - 1; i++) {
+    //   count += 1;
+    //   if (count === n) {
+
+    //     count = 0;
+    //   } else {
+    //     totalprice += price;
+    //   }
+    // }
+    console.log(totalprice);
+    return totalprice;
+  }
 
   static applyDiscount(discountsArray, price, discounts, basketquantity) {
     let discountamount = 0;
@@ -64,12 +83,17 @@ class Application {
       discountid = discountsArray[i];
       const discounttype = discounts[discountsArray[i]].type;
       const discountminimum = discounts[discountid].min;
+      const discountm = discounts[discountid].m;
+      const discountn = discounts[discountid].n;
+
       if (discounttype === 'percent' && basketquantity >= discountminimum) {
         discountamount = this.getPercentDiscount(discountedprice, discounts, discountid);
         discountedprice -= discountamount;
       } else if (discounttype === 'absolute' && basketquantity >= discountminimum) {
         discountamount = this.getAbsoluteDiscount(discounts, discountid);
         discountedprice -= discountamount;
+      } else if (discounttype === 'buyNGetMFree' && basketquantity >= discountminimum) {
+        discountedprice = this.getBuyNGetMFree(discountn, discountm, price, basketquantity);
       } else {
         discountedprice *= basketquantity;
       }
