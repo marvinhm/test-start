@@ -39,8 +39,10 @@ class Application {
     const discountkeysarray = this.getDiscountIdArray(discounts);
     const discountminimum = discounts[discountkeysarray[0]].min;
     if (discountkeysarray.length > 0 && basketquantity >= discountminimum) {
-      itemPrice *= (discounts[discountkeysarray[0]].value / 100);
-      discountamount = itemPrice;
+      for (let i in discountkeysarray) {
+        itemPrice -= itemPrice * (discounts[discountkeysarray[i]].value / 100);
+      }
+      discountamount = price - itemPrice;
     }
     return discountamount;
   }
@@ -51,11 +53,11 @@ class Application {
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
     const price = this.checkBasketIfInUse(basket);
     const basketquantity = this.basketQuantity(basket);
-    let discountAmount = 0;
+    let discountamount = 0;
     if (this.getDiscountIdArray(discounts).length > 0) {
-      discountAmount = this.getPercentDiscount(price, discounts, basketquantity);
+      discountamount = this.getPercentDiscount(price, discounts, basketquantity);
     }
-    const total = price - discountAmount;
+    const total = price - discountamount;
 
     return total;
     throw new Error('You must implement this.');
