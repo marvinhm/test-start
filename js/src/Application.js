@@ -20,12 +20,6 @@ class Application {
     return Object.keys(basket).length;
   }
 
-  // static discountType(discounts) {
-  //   if() {
-
-  //   }
-  // }
-
   static checkBasketIfInUse(basket) {
     let priceVal = 0;
     if (this.basketQuantity(basket) > 1) {
@@ -39,23 +33,21 @@ class Application {
     return priceVal;
   }
 
-  static getPercentDiscount(price, discounts, discountid, basketquantity) {
+  static getPercentDiscount(price, discounts, discountid) {
     let discountamount = 0;
     const itemPrice = price;
-    // const discountkeysarray = this.getDiscountIdArray(discounts);
-    // const discountminimum = discounts[discountid].min;
-    // if (basketquantity >= discountminimum) {
-      // itemPrice -= itemPrice * (discounts[discountid].value / 100);
-      discountamount = itemPrice * (discounts[discountid].value / 100);
-    // }
+    const discountvalue = discounts[discountid].value;
+    discountamount = itemPrice * (discountvalue / 100);
+
     return discountamount;
   }
 
 
-  // static getPercentDiscount(price, basketquantity) {
-  //   let discountamount = 0;
-  //   let itemPrice = price;
-  // }
+  static getAbsoluteDiscount(discounts, discountid) {
+    const discountamount = discounts[discountid].value;
+
+    return discountamount;
+  }
 
 
   static applyDiscount(discountsArray, price, discounts, basketquantity) {
@@ -70,6 +62,9 @@ class Application {
       const discountminimum = discounts[discountid].min;
       if (discounttype === 'percent' && basketquantity >= discountminimum) {
         discountamount = this.getPercentDiscount(discountedprice, discounts, discountid);
+        discountedprice -= discountamount;
+      } else if (discounttype === 'absolute' && basketquantity >= discountminimum) {
+        discountamount = this.getAbsoluteDiscount(discounts, discountid);
         discountedprice -= discountamount;
       }
     }
