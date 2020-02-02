@@ -25,23 +25,23 @@ class Application {
   }
 
   static checkBasketIfInUse(basket) {
-    let priceVal = 0;
+    let pricevalue = 0;
     if (this.sizeOfBasket(basket) > 1) {
       // eslint-disable-next-line guard-for-in
       for (let i in basket) {
-        priceVal += (basket[i].price * basket[i].quantity);
+        pricevalue += (basket[i].price * basket[i].quantity);
       }
     } else if (this.sizeOfBasket(basket) === 1) {
-      priceVal = basket[this.getBasketId(basket)].price;
+      pricevalue = basket[this.getBasketId(basket)].price;
     }
-    return priceVal;
+    return pricevalue;
   }
 
   static getPercentDiscount(price, discounts, discountid) {
     let discountamount = 0;
-    const itemPrice = price;
+    const itemprice = price;
     const discountvalue = discounts[discountid].value;
-    discountamount = itemPrice * (discountvalue / 100);
+    discountamount = itemprice * (discountvalue / 100);
 
     return discountamount;
   }
@@ -68,21 +68,33 @@ class Application {
     return pricetobepaid;
   }
 
-  static nForThePriceOfM(n, m, price, basketquantity) {
-    let totalprice = 0;
-    let ncount = 1;
-    let mcount = 1;
+  static makeArrayOfGivenLength(length, item) {
+    const myarray = [];
+    for (let i = 0; i < length; i++) {
+      myarray.push(item);
+    }
+    return myarray;
+  }
 
-    for (let i = 0; i <= basketquantity; i++) {
-      if (ncount <= n) {
-        ncount += 1;
-        if (mcount <= m) {
-          totalprice += price;
-          mcount += 1;
+  static nForThePriceOfM(n, m, price, basketquantity) {
+    const arrayofprices = this.makeArrayOfGivenLength(basketquantity, price);
+    let totalprice = 0;
+    let subarray = [];
+    let x = 0;
+    while (arrayofprices.length !== 0) {
+      for (let i = 0; i < n; i++) {
+        if (arrayofprices.length > 0) {
+          x = arrayofprices.pop();
+          subarray.push(x);
         }
-      } else {
-        ncount = 1;
-        mcount = 1;
+      }
+      if (subarray.length > 0) {
+        for (let j = 0; j < subarray.length; j++) {
+          if (j <= (m - 1)) {
+            totalprice += subarray[j];
+          }
+        }
+        subarray = [];
       }
     }
 
@@ -93,7 +105,6 @@ class Application {
     let discountamount = 0;
     let discountedprice = price;
     let discountid = '';
-  
     // eslint-disable-next-line guard-for-in
     for (let i in discountsArray) {
       discountid = discountsArray[i];
