@@ -62,7 +62,7 @@ class Application {
         totalprice += price;
         counter += 1;
       } else {
-        counter = 0;
+        counter = 1;
       }
     }
     return totalprice;
