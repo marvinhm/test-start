@@ -70,16 +70,19 @@ class Application {
 
   static nForThePriceOfM(n, m, price, basketquantity) {
     let totalprice = 0;
-    const freeitemsprice = (n - m) * price;
     let ncount = 1;
+    let mcount = 1;
 
-    for (let i = 1; i <= basketquantity; i++) {
+    for (let i = 0; i <= basketquantity; i++) {
       if (ncount <= n) {
-        totalprice += price;
         ncount += 1;
+        if (mcount <= m) {
+          totalprice += price;
+          mcount += 1;
+        }
       } else {
-        totalprice -= freeitemsprice;
         ncount = 1;
+        mcount = 1;
       }
     }
 
