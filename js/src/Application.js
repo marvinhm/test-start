@@ -56,6 +56,7 @@ class Application {
   static getBuyNGetMFree(n, m, price, basketquantity) {
     let counter = 1;
     let pricetobepaid = 0;
+    let discountamount = 0;
 
     for (let i = 1; i <= basketquantity; i++) {
       if (counter <= n) {
@@ -65,7 +66,9 @@ class Application {
         counter = 1;
       }
     }
-    return pricetobepaid;
+
+    discountamount = price - pricetobepaid;
+    return discountamount;
   }
 
   static makeArrayOfGivenLength(length, item) {
@@ -81,6 +84,8 @@ class Application {
     let totalprice = 0;
     let subarray = [];
     let x = 0;
+    let discountamount = 0;
+
     while (arrayofprices.length !== 0) {
       for (let i = 0; i < n; i++) {
         if (arrayofprices.length > 0) {
@@ -97,8 +102,8 @@ class Application {
         subarray = [];
       }
     }
-
-    return totalprice;
+    discountamount = price - totalprice;
+    return discountamount;
   }
 
   static applyDiscount(discountsArray, price, discounts, basketquantity) {
@@ -120,9 +125,11 @@ class Application {
         discountamount = this.getAbsoluteDiscount(discounts, discountid);
         discountedprice -= discountamount;
       } else if (discounttype === 'buyNGetMFree' && basketquantity >= discountminimum) {
-        discountedprice = this.getBuyNGetMFree(discountn, discountm, price, basketquantity);
+        discountamount = this.getBuyNGetMFree(discountn, discountm, discountedprice, basketquantity);
+        discountedprice -= discountamount;
       } else if (discounttype === 'nForThePriceOfM' && basketquantity >= discountminimum) {
-        discountedprice = this.nForThePriceOfM(discountn, discountm, price, basketquantity);
+        discountamount = this.nForThePriceOfM(discountn, discountm, discountedprice, basketquantity);
+        discountedprice -= discountamount;
       } else {
         discountedprice *= basketquantity;
       }
@@ -130,21 +137,35 @@ class Application {
     return discountedprice;
   }
 
+  static howManyItemsInTheBasket(basket) {
+    let basketquantity = 0;
+    const size = this.sizeOfBasket(basket);
+    if (size > 0) {
+      basketquantity = basket[this.getBasketId(basket)].quantity;
+    } else {
+      basketquantity = 0;
+    }
+    return basketquantity;
+  }
+
+
+  static doDiscountsExist(discounts, price, basketquantity) {
+    let subtotal = 0;
+    const discountsArray = this.getDiscountIdArray(discounts);
+    if (discountsArray.length > 0) {
+      subtotal = this.applyDiscount(discountsArray, price, discounts, basketquantity);
+    } else {
+      subtotal = price;
+    }
+    return subtotal;
+  }
 
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
     const price = this.checkBasketIfInUse(basket);
-    const size = this.sizeOfBasket(basket);
-    let basketquantity = 0;
-    size > 0 ? basketquantity = basket[this.getBasketId(basket)].quantity : basketquantity = 0;
+    const basketquantity = this.howManyItemsInTheBasket(basket);
     let total = 0;
-    let discountamount = 0;
-    const discountsArray = this.getDiscountIdArray(discounts);
-    if (discountsArray.length > 0) {
-      discountamount = this.applyDiscount(discountsArray, price, discounts, basketquantity);
-      total = discountamount;
-    } else {
-      total = price;
-    }
+
+    total = this.doDiscountsExist(discounts, price, basketquantity);
 
     return total;
     throw new Error('You must implement this.');
