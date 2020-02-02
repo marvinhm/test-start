@@ -2,321 +2,321 @@
 
 const Application = require('../src/Application');
 
-test('returns zero when nothing in basket', () => {
-  expect(Application.main([], [])).toBe(0.0);
-});
+// test('returns zero when nothing in basket', () => {
+//   expect(Application.main([], [])).toBe(0.0);
+// });
 
-test('returns base price of product without discounts', () => {
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 9.99,
-      quantity: 1,
-      discounts: [],
-    },
-  };
-  expect(Application.main(basket, [])).toBe(9.99);
-});
+// test('returns base price of product without discounts', () => {
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 9.99,
+//       quantity: 1,
+//       discounts: [],
+//     },
+//   };
+//   expect(Application.main(basket, [])).toBe(9.99);
+// });
 
-test('sums product prices without discounts', () => {
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 9.99,
-      quantity: 1,
-      discounts: [],
-    },
-    'b0d57b3e-246a-401b-a1be-70e195f69497': {
-      price: 50.00,
-      quantity: 3,
-      discounts: [],
-    },
-    '2693be09-f914-4533-9a78-6d6477871b5d': {
-      price: 29.50,
-      quantity: 10,
-      discounts: [],
-    },
-  };
-  expect(Application.main(basket, [])).toBe(9.99 + (3 * 50.00) + (10 * 29.50));
-});
+// test('sums product prices without discounts', () => {
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 9.99,
+//       quantity: 1,
+//       discounts: [],
+//     },
+//     'b0d57b3e-246a-401b-a1be-70e195f69497': {
+//       price: 50.00,
+//       quantity: 3,
+//       discounts: [],
+//     },
+//     '2693be09-f914-4533-9a78-6d6477871b5d': {
+//       price: 29.50,
+//       quantity: 10,
+//       discounts: [],
+//     },
+//   };
+//   expect(Application.main(basket, [])).toBe(9.99 + (3 * 50.00) + (10 * 29.50));
+// });
 
-test('percentage discount', () => {
-  const discounts = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      type: 'percent',
-      value: 15,
-      min: 1,
-    },
-  };
-  const basket = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      price: 10.00,
-      quantity: 1,
-      discounts: [
-        'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(8.50);
-});
+// test('percentage discount', () => {
+//   const discounts = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       type: 'percent',
+//       value: 15,
+//       min: 1,
+//     },
+//   };
+//   const basket = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       price: 10.00,
+//       quantity: 1,
+//       discounts: [
+//         'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(8.50);
+// });
 
-test('percentage discount has min qualifier', () => {
-  const discounts = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      type: 'percent',
-      value: 15,
-      min: 2,
-    },
-  };
-  const basket = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      price: 10.00,
-      quantity: 1, // need 2 to qualify, only buying 1
-      discounts: [
-        'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(10.00);
-});
+// test('percentage discount has min qualifier', () => {
+//   const discounts = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       type: 'percent',
+//       value: 15,
+//       min: 2,
+//     },
+//   };
+//   const basket = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       price: 10.00,
+//       quantity: 1, // need 2 to qualify, only buying 1
+//       discounts: [
+//         'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(10.00);
+// });
 
-test('percentage discount cumulative', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'percent',
-      value: 10,
-      min: 1,
-    },
-    '6cb609e2-818e-40bb-9b29-8799ba328232': {
-      type: 'percent',
-      value: 5,
-      min: 1,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 1,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-        '6cb609e2-818e-40bb-9b29-8799ba328232',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(8.55); // 95% of 90% of 10.00
-});
+// test('percentage discount cumulative', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'percent',
+//       value: 10,
+//       min: 1,
+//     },
+//     '6cb609e2-818e-40bb-9b29-8799ba328232': {
+//       type: 'percent',
+//       value: 5,
+//       min: 1,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 1,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//         '6cb609e2-818e-40bb-9b29-8799ba328232',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(8.55); // 95% of 90% of 10.00
+// });
 
-test('absolute discount', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'absolute',
-      value: 2.50,
-      min: 1,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 1,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(7.50);
-});
+// test('absolute discount', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'absolute',
+//       value: 2.50,
+//       min: 1,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 1,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(7.50);
+// });
 
-test('absolute discount has minimum qualifier', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'absolute',
-      value: 2.50,
-      min: 3,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 2, // need 3 to qualify, only buying 2
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(20.00);
-});
+// test('absolute discount has minimum qualifier', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'absolute',
+//       value: 2.50,
+//       min: 3,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 2, // need 3 to qualify, only buying 2
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(20.00);
+// });
 
-test('percentage and absolute discount', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'percent',
-      value: 10,
-      min: 1,
-    },
-    '6cb609e2-818e-40bb-9b29-8799ba328232': {
-      type: 'absolute',
-      value: 1.25,
-      min: 1,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 1,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-        '6cb609e2-818e-40bb-9b29-8799ba328232',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(7.75);
-});
+// test('percentage and absolute discount', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'percent',
+//       value: 10,
+//       min: 1,
+//     },
+//     '6cb609e2-818e-40bb-9b29-8799ba328232': {
+//       type: 'absolute',
+//       value: 1.25,
+//       min: 1,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 1,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//         '6cb609e2-818e-40bb-9b29-8799ba328232',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(7.75);
+// });
 
-test('buy N get M free', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'buyNGetMFree',
-      n: 2, // buy 2 ...
-      m: 1, // ... get 1 free
-      min: 3,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 3,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(20.00);
-});
+// test('buy N get M free', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'buyNGetMFree',
+//       n: 2, // buy 2 ...
+//       m: 1, // ... get 1 free
+//       min: 3,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 3,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(20.00);
+// });
 
-test('buy N get M free when quantity not multiple of M', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'buyNGetMFree',
-      n: 2, // buy 2 ...
-      m: 1, // ... get 1 free
-      min: 3,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 4,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  // first three cost 20, fourth costs 10
-  expect(Application.main(basket, discounts)).toBe(20.00 + 10.00);
-});
+// test('buy N get M free when quantity not multiple of M', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'buyNGetMFree',
+//       n: 2, // buy 2 ...
+//       m: 1, // ... get 1 free
+//       min: 3,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 4,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   // first three cost 20, fourth costs 10
+//   expect(Application.main(basket, discounts)).toBe(20.00 + 10.00);
+// });
 
-test('buy N get M free, twice M', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'buyNGetMFree',
-      n: 2, // buy 2 ...
-      m: 1, // ... get 1 free
-      min: 3,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 6,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(40.00);
-});
+// test('buy N get M free, twice M', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'buyNGetMFree',
+//       n: 2, // buy 2 ...
+//       m: 1, // ... get 1 free
+//       min: 3,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 6,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(40.00);
+// });
 
-test('buy N get M free, 1-to-1', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'buyNGetMFree',
-      n: 1, // buy 1 ...
-      m: 1, // ... get 1 free
-      min: 2,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 10.00,
-      quantity: 10,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(50.00);
-});
+// test('buy N get M free, 1-to-1', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'buyNGetMFree',
+//       n: 1, // buy 1 ...
+//       m: 1, // ... get 1 free
+//       min: 2,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 10.00,
+//       quantity: 10,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(50.00);
+// });
 
-test('N for the price of M', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'nForThePriceOfM',
-      n: 4, // 4 ...
-      m: 3, // ... for the price of 3
-      min: 4,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 20.00,
-      quantity: 4,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(60.00);
-});
+// test('N for the price of M', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'nForThePriceOfM',
+//       n: 4, // 4 ...
+//       m: 3, // ... for the price of 3
+//       min: 4,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 20.00,
+//       quantity: 4,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(60.00);
+// });
 
-test('N for the price of M, with two free', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'nForThePriceOfM',
-      n: 5, // 5 ...
-      m: 3, // ... for the price of 3
-      min: 5,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 20.00,
-      quantity: 5,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(60.00);
-});
+// test('N for the price of M, with two free', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'nForThePriceOfM',
+//       n: 5, // 5 ...
+//       m: 3, // ... for the price of 3
+//       min: 5,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 20.00,
+//       quantity: 5,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(60.00);
+// });
 
-test('N for the price of M, with one leftover', () => {
-  const discounts = {
-    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-      type: 'nForThePriceOfM',
-      n: 4, // 4 ...
-      m: 3, // ... for the price of 3
-      min: 4,
-    },
-  };
-  const basket = {
-    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-      price: 20.00,
-      quantity: 5,
-      discounts: [
-        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-      ],
-    },
-  };
-  expect(Application.main(basket, discounts)).toBe(80.00);
-});
+// test('N for the price of M, with one leftover', () => {
+//   const discounts = {
+//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+//       type: 'nForThePriceOfM',
+//       n: 4, // 4 ...
+//       m: 3, // ... for the price of 3
+//       min: 4,
+//     },
+//   };
+//   const basket = {
+//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+//       price: 20.00,
+//       quantity: 5,
+//       discounts: [
+//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+//       ],
+//     },
+//   };
+//   expect(Application.main(basket, discounts)).toBe(80.00);
+// });
 
 // test('N for the price of M, with two leftover', () => {
 //   const discounts = {
@@ -339,26 +339,26 @@ test('N for the price of M, with one leftover', () => {
 //   expect(Application.main(basket, discounts)).toBe(100.00);
 // });
 
-// test('N for the price of M, twice N', () => {
-//   const discounts = {
-//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-//       type: 'nForThePriceOfM',
-//       n: 3, // 3 ...
-//       m: 2, // ... for the price of 2
-//       min: 3,
-//     },
-//   };
-//   const basket = {
-//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-//       price: 10.00,
-//       quantity: 6,
-//       discounts: [
-//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-//       ],
-//     },
-//   };
-//   expect(Application.main(basket, discounts)).toBe(40.00);
-// });
+test('N for the price of M, twice N', () => {
+  const discounts = {
+    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+      type: 'nForThePriceOfM',
+      n: 3, // 3 ...
+      m: 2, // ... for the price of 2
+      min: 3,
+    },
+  };
+  const basket = {
+    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+      price: 10.00,
+      quantity: 6,
+      discounts: [
+        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+      ],
+    },
+  };
+  expect(Application.main(basket, discounts)).toBe(40.00);
+});
 
 // test('N for the price of M, twice M, with one leftover', () => {
 //   const discounts = {

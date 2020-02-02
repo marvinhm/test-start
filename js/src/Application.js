@@ -69,12 +69,21 @@ class Application {
   }
 
   static nForThePriceOfM(n, m, price, basketquantity) {
-    const totalprice = price * basketquantity;
-    const numoffreeitems = n - m;
-    const freeitemsdiscount = price * numoffreeitems;
-    const pricetobepaid = totalprice - freeitemsdiscount;
+    let totalprice = 0;
+    const freeitemsprice = (n - m) * price;
+    let ncount = 1;
 
-    return pricetobepaid;
+    for (let i = 1; i <= basketquantity; i++) {
+      if (ncount <= n) {
+        totalprice += price;
+        ncount += 1;
+      } else {
+        totalprice -= freeitemsprice;
+        ncount = 1;
+      }
+    }
+
+    return totalprice;
   }
 
   static applyDiscount(discountsArray, price, discounts, basketquantity) {
