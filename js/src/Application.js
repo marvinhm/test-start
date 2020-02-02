@@ -55,17 +55,26 @@ class Application {
 
   static getBuyNGetMFree(n, m, price, basketquantity) {
     let counter = 1;
-    let totalprice = 0;
+    let pricetobepaid = 0;
 
     for (let i = 1; i <= basketquantity; i++) {
       if (counter <= n) {
-        totalprice += price;
+        pricetobepaid += price;
         counter += 1;
       } else {
         counter = 1;
       }
     }
-    return totalprice;
+    return pricetobepaid;
+  }
+
+  static nForThePriceOfM(n, m, price) {
+    const totalprice = price * n;
+    const numoffreeitems = n - m;
+    const freeitemsdiscount = price * numoffreeitems;
+    const pricetobepaid = totalprice - freeitemsdiscount;
+
+    return pricetobepaid;
   }
 
   static applyDiscount(discountsArray, price, discounts, basketquantity) {
@@ -89,6 +98,8 @@ class Application {
         discountedprice -= discountamount;
       } else if (discounttype === 'buyNGetMFree' && basketquantity >= discountminimum) {
         discountedprice = this.getBuyNGetMFree(discountn, discountm, price, basketquantity);
+      } else if (discounttype === 'nForThePriceOfM' && basketquantity >= discountminimum) {
+        discountedprice = this.nForThePriceOfM(discountn, discountm, price);
       } else {
         discountedprice *= basketquantity;
       }
