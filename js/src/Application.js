@@ -68,8 +68,8 @@ class Application {
     return pricetobepaid;
   }
 
-  static nForThePriceOfM(n, m, price) {
-    const totalprice = price * n;
+  static nForThePriceOfM(n, m, price, basketquantity) {
+    const totalprice = price * basketquantity;
     const numoffreeitems = n - m;
     const freeitemsdiscount = price * numoffreeitems;
     const pricetobepaid = totalprice - freeitemsdiscount;
@@ -99,7 +99,7 @@ class Application {
       } else if (discounttype === 'buyNGetMFree' && basketquantity >= discountminimum) {
         discountedprice = this.getBuyNGetMFree(discountn, discountm, price, basketquantity);
       } else if (discounttype === 'nForThePriceOfM' && basketquantity >= discountminimum) {
-        discountedprice = this.nForThePriceOfM(discountn, discountm, price);
+        discountedprice = this.nForThePriceOfM(discountn, discountm, price, basketquantity);
       } else {
         discountedprice *= basketquantity;
       }

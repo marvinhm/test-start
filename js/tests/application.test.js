@@ -276,47 +276,47 @@ test('N for the price of M', () => {
   expect(Application.main(basket, discounts)).toBe(60.00);
 });
 
-// test('N for the price of M, with two free', () => {
-//   const discounts = {
-//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-//       type: 'nForThePriceOfM',
-//       n: 5, // 5 ...
-//       m: 3, // ... for the price of 3
-//       min: 5,
-//     },
-//   };
-//   const basket = {
-//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-//       price: 20.00,
-//       quantity: 5,
-//       discounts: [
-//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-//       ],
-//     },
-//   };
-//   expect(Application.main(basket, discounts)).toBe(60.00);
-// });
+test('N for the price of M, with two free', () => {
+  const discounts = {
+    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+      type: 'nForThePriceOfM',
+      n: 5, // 5 ...
+      m: 3, // ... for the price of 3
+      min: 5,
+    },
+  };
+  const basket = {
+    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+      price: 20.00,
+      quantity: 5,
+      discounts: [
+        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+      ],
+    },
+  };
+  expect(Application.main(basket, discounts)).toBe(60.00);
+});
 
-// test('N for the price of M, with one leftover', () => {
-//   const discounts = {
-//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-//       type: 'nForThePriceOfM',
-//       n: 4, // 4 ...
-//       m: 3, // ... for the price of 3
-//       min: 4,
-//     },
-//   };
-//   const basket = {
-//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-//       price: 20.00,
-//       quantity: 5,
-//       discounts: [
-//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-//       ],
-//     },
-//   };
-//   expect(Application.main(basket, discounts)).toBe(80.00);
-// });
+test('N for the price of M, with one leftover', () => {
+  const discounts = {
+    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+      type: 'nForThePriceOfM',
+      n: 4, // 4 ...
+      m: 3, // ... for the price of 3
+      min: 4,
+    },
+  };
+  const basket = {
+    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+      price: 20.00,
+      quantity: 5,
+      discounts: [
+        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+      ],
+    },
+  };
+  expect(Application.main(basket, discounts)).toBe(80.00);
+});
 
 // test('N for the price of M, with two leftover', () => {
 //   const discounts = {
