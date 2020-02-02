@@ -54,22 +54,17 @@ class Application {
   }
 
   static getBuyNGetMFree(n, m, price, basketquantity) {
-    let totalprice = price * basketquantity;
-    let discountprice = 0;
+    let counter = 1;
+    let totalprice = 0;
 
-    discountprice = (Math.floor(basketquantity / n) * m) * price;
-
-    totalprice -= discountprice;
-    // for (let i = 0; i < basketquantity - 1; i++) {
-    //   count += 1;
-    //   if (count === n) {
-
-    //     count = 0;
-    //   } else {
-    //     totalprice += price;
-    //   }
-    // }
-    console.log(totalprice);
+    for (let i = 1; i <= basketquantity; i++) {
+      if (counter <= n) {
+        totalprice += price;
+        counter += 1;
+      } else {
+        counter = 0;
+      }
+    }
     return totalprice;
   }
 

@@ -213,26 +213,26 @@ test('buy N get M free when quantity not multiple of M', () => {
   expect(Application.main(basket, discounts)).toBe(20.00 + 10.00);
 });
 
-// test('buy N get M free, twice M', () => {
-//   const discounts = {
-//     'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
-//       type: 'buyNGetMFree',
-//       n: 2, // buy 2 ...
-//       m: 1, // ... get 1 free
-//       min: 3,
-//     },
-//   };
-//   const basket = {
-//     'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
-//       price: 10.00,
-//       quantity: 6,
-//       discounts: [
-//         'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
-//       ],
-//     },
-//   };
-//   expect(Application.main(basket, discounts)).toBe(40.00);
-// });
+test('buy N get M free, twice M', () => {
+  const discounts = {
+    'cd29ba8c-faf2-4493-9b6b-4b339310d82d': {
+      type: 'buyNGetMFree',
+      n: 2, // buy 2 ...
+      m: 1, // ... get 1 free
+      min: 3,
+    },
+  };
+  const basket = {
+    'c08200af-0fa9-45e3-a6a0-cb7bd6696d4e': {
+      price: 10.00,
+      quantity: 6,
+      discounts: [
+        'cd29ba8c-faf2-4493-9b6b-4b339310d82d',
+      ],
+    },
+  };
+  expect(Application.main(basket, discounts)).toBe(40.00);
+});
 
 // test('buy N get M free, 1-to-1', () => {
 //   const discounts = {
