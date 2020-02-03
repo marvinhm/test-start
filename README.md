@@ -1,6 +1,3 @@
-## Shopping Basket
-
-### Candidate coding exercise
 
 ## Scenario
 
