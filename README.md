@@ -1,9 +1,7 @@
 
 ## Scenario
 
-You will be implementing a shopping basket.
-
-You will need to write code that accepts a basket of items and some discounts, applies the discounts to the items in the basket, and returns a total price.
+a shopping basket that accepts a basket of items and some discounts, applies the discounts to the items in the basket, and returns a total price.
 
 (Both the basket (i.e. the collection of items) and the collection of discounts are keyed by uuid4.)
 
@@ -48,25 +46,6 @@ A n-for-the-price-of-m discount has properties:
 * `n` an integer, the quantity of items
 * `m` an integer, the quantity of items which need to be paid for
 * `min` the minimum quantity of items in order to qualify for the discount - effectively `n`
-
-## Brief
-
-You should at least make all the existing tests pass, but it's your coding style that we really want to see!
-
-We'll be paying particular attention to things like:
-
-* [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
-* [Separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
-* [SRP](https://en.wikipedia.org/wiki/Single_responsibility_principle)
-* [Defensive programming](https://en.wikipedia.org/wiki/Defensive_programming)
-* [Minimal nesting](https://en.wikibooks.org/wiki/Computer_Programming/Coding_Style/Minimize_nesting)
-* Sensible function/method lengths
-
-You may implement the solution however you wish, in whichever style you wish, by adding classes, files, functions - even additional test coverage!
-
-You will be expected to justify and defend your decisions at interview.
-
-You may choose to do the exercise in either PHP or JavaScript.
 
 ## Running the tests
 
