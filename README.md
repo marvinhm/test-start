@@ -1,7 +1,7 @@
 
 ## Scenario
 
-a shopping basket that accepts a basket of items and some discounts, applies the discounts to the items in the basket, and returns a total price.
+A shopping basket that accepts a basket of items and some discounts, applies the discounts to the items in the basket, and returns a total price.
 
 (Both the basket (i.e. the collection of items) and the collection of discounts are keyed by uuid4.)
 
@@ -11,7 +11,7 @@ A basket is a collection of items, and an item has three properties:
 * `quantity` the number of items to buy
 * `discounts` a collection of discounts to be applied to the item (in the order given)
 
-There are four discount types which need to be implemented:
+There are four discount types:
 
 ### Percentage
 
