@@ -1,4 +1,6 @@
-# Candidate coding exercise
+## Shopping Basket
+
+### Candidate coding exercise
 
 ## Scenario
 

@@ -28,9 +28,7 @@ class Application {
     let pricevalue = 0;
     if (this.sizeOfBasket(basket) > 1) {
       // eslint-disable-next-line guard-for-in
-      for (let i in basket) {
-        pricevalue += (basket[i].price * basket[i].quantity);
-      }
+      pricevalue += (basket.price * basket.quantity);
     } else if (this.sizeOfBasket(basket) === 1) {
       pricevalue = basket[this.getBasketId(basket)].price;
     }
@@ -111,7 +109,7 @@ class Application {
     let discountedprice = price;
     let discountid = '';
     // eslint-disable-next-line guard-for-in
-    for (let i in discountsArray) {
+    for (let i = 0; i < discountsArray.length; i++) {
       discountid = discountsArray[i];
       const discounttype = discounts[discountsArray[i]].type;
       const discountminimum = discounts[discountid].min;
@@ -160,15 +158,28 @@ class Application {
     return subtotal;
   }
 
+  static forManyBaskets(baskets) {
+    let price = 0;
+    if (Object.keys(baskets).length > 1) {
+      // eslint-disable-next-line guard-for-in
+      for (let i in baskets) {
+        const basket = baskets[i];
+        price += this.checkBasketIfInUse(basket);
+      }
+    } else {
+      price = this.checkBasketIfInUse(baskets);
+    }
+    return price;
+  }
+
   static main(basket, discounts) { // eslint-disable-line no-unused-vars
-    const price = this.checkBasketIfInUse(basket);
+    const price = this.forManyBaskets(basket);
     const basketquantity = this.howManyItemsInTheBasket(basket);
     let total = 0;
 
     total = this.doDiscountsExist(discounts, price, basketquantity);
 
     return total;
-    throw new Error('You must implement this.');
   }
 }
 
